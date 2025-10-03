@@ -9,7 +9,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -18,21 +18,18 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20
-          cache: 'yarn'
-
-      - name: Install Yarn
-        run: npm install -g yarn
+          cache: "npm"
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: Run tests
-        run: yarn test
+        run: npm run test
 
   build-and-deploy:
     needs: test
-    runs-on: self-hosted  # Changed to self-hosted
-    
+    runs-on: self-hosted # Changed to self-hosted
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -41,16 +38,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20
-          cache: 'yarn'
-
-      - name: Install Yarn
-        run: npm install -g yarn
+          cache: "npm"
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: Build T3 App
-        run: yarn build
+        run: npm run build
 
       - name: Build Docker image
         run: docker build -t t3-trpc-app:latest .
